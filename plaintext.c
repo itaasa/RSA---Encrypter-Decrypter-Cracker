@@ -6,7 +6,7 @@
  * it into numeric plain-text, then split it into message blocks.
  * The public key n and textfile will be give as parameters. */
 
-char* convert_alpha (char *);			
+int* convert_num (char *);			
 char* read_plaintext ();		//Reads plain text message from file
 
 int main (int argc, char ** argv) {
@@ -19,7 +19,9 @@ int main (int argc, char ** argv) {
 	printf ("The public key is: %d\n", n);
 
 	printf ("Reading from file...\n");
-	printf ("%s", read_plaintext(argv[1]));
+	char* alphatext = read_plaintext(argv[1]);
+
+	int* numtext = convert_num(alphatext);
 }
 
 
@@ -46,11 +48,22 @@ char* read_plaintext(char *filepath) {
 	for (i=0; i<file_size; i++){
 		plaintext[i] = fgetc (file);
 	}	
-
+	
+	fclose(file);
 	return plaintext;
 }
 
-int* convert_alpha (char *plaintext) {
+int* convert_num (char *plaintext) {
+	int len = strlen (plaintext);
 
+	int numplain [len];
+
+	int i;
+	for (int i=0; i<len; i++){
+		numplain[i] = (int) plaintext [i];	
+		printf("%d\n", numplain[i]);
+	}
+
+	
 }
 
