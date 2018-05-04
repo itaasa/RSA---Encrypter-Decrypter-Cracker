@@ -6,24 +6,41 @@
  * it into numeric plain-text, then split it into message blocks.
  * The public key n and textfile will be give as parameters. */
 
-int* convert_num (char *);			
-char* read_plaintext ();		//Reads plain text message from file
+int handle_args (char *, int);		//Checks if arguments are valid	
+char* read_plaintext (char *);		//Reads plain text message from file
+int* convert_num (char *);
 
 int main (int argc, char ** argv) {
 
-	int n;
+	int n = atoi(argv[2]);
+	char* filepath = argv[1];
 
-	n = atoi(argv [2]);
-
-	printf ("File will be read from: %s\n", argv[1]);	
-	printf ("The public key is: %d\n", n);
-
-	printf ("Reading from file...\n");
-	char* alphatext = read_plaintext(argv[1]);
-
-	int* numtext = convert_num(alphatext);
+	if (handle_args(filepath, n) == 1){
+		printf ("File will be read from: %s\n", argv[1]);	
+		printf ("The public key is: %d\n", n);
+		printf ("Reading from file...\n");
+		char* alphatext = read_plaintext(argv[1]);
+		int* numtext = convert_num(alphatext);
+	}
 }
 
+int handle_args(char* filepath, int n){
+	
+	FILE* file = fopen (filepath, "r");
+	
+	if (file == NULL){
+		printf ("%s - File does not exist.\n", filepath);
+		return -1;
+	}
+
+	else if (n < 128){
+		printf ("Public key is too small.\n");
+		return -1;
+	}
+
+	else 
+		return 1;
+}
 
 char* read_plaintext(char *filepath) {
 	
